@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlogModel;
+use App\Models\CommentModel;
+use App\Models\User;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Validator;
 
 class BlogController extends Controller
 {
@@ -25,14 +26,18 @@ class BlogController extends Controller
 
     public function detailedBlog($id)
     {
-        $post = $this->model->where('id', $id);
-        return view("detailedBlog", ["post" => $post]);
+        $post = $this->model->where('id', $id)->first();
+        $comments = CommentModel::all();
+        return view("detailed_blog", ['post' => $post, 'comments' => $comments]);
     }
 
-    public function deletePost($id)
+    public function delete($id)
     {
-        $this->model->where('id', '=', $id)->delete();
+        if ($_SESSION['user']['role'] != 'admin') {
+            return redirect('/User/login');
+        }
+        $this->model->where('id', $id)->delete();
 
-        return redirect('/');
+        return redirect('/Blog');
     }
 }

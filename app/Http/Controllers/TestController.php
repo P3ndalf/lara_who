@@ -17,7 +17,7 @@ class TestController extends Controller
 
     public function index()
     {
-        if ($_SESSION['user']) {
+        if (isset($_SESSION['user'])) {
             $results = $this->model->all();
             return view('test', ['results' => $results]);
         }

@@ -43,7 +43,7 @@ class UserController extends Controller
                 'role' => 'user'
             ];
 
-            if ($request['login'] == $this->adminModel['login'] && (md5($request['password']) == $this->adminModel['password'])) {
+            if ($request['login'] == $this->adminModel['login'] && md5($request['password']) == $this->adminModel['password']) {
                 $_SESSION['user']['role'] = 'admin';
             }
 

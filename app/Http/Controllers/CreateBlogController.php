@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlogModel;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\Storage;
 
 class CreateBlogController extends Controller
 {
@@ -14,10 +11,15 @@ class CreateBlogController extends Controller
 
     public function __construct()
     {
+        if (session_status() !== PHP_SESSION_ACTIVE) session_start();
         $this->model = new BlogModel();
     }
-    public function createPost()
+
+    public function createView()
     {
+        if (!$_SESSION['user']) {
+            return redirect('/User/login');
+        }
         return view("create_post");
     }
 
@@ -25,13 +27,14 @@ class CreateBlogController extends Controller
     {
         $request->validate([
             'theme' => 'required',
-            'imageFile' => 'file|mimes:jpg,jpeg,png',
+            //'imageFile' => 'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
             'content' => 'required'
         ]);
 
         $this->model->theme = $request['theme'];
         $this->model->content = $request['content'];
-        $this->model->imageLink = trim($_FILES['imageFile']['name']) ? $this->getImageLink($_FILES['imageFile']) : null;
+        $this->model->imageLink = "";
+        //$this->model->imageLink = $request('imageFile')->store('public/assets/imgs/blog');
 
         $isSaved = $this->model->save();
 
@@ -40,47 +43,37 @@ class CreateBlogController extends Controller
         }
     }
 
-    public function updatePost(Request $request)
+    public function editPost($id)
     {
-        $xmlString = file_get_contents('php://input');
-        $xml = simplexml_load_string($xmlString, null, LIBXML_NOCDATA);
-        $json = json_encode($xml);
-        $array = json_decode($json, TRUE);
-
-
-        $validator = Validator::make(
-            $array,
-            [
-                'theme' => 'required',
-                'content' => 'required'
-            ],
-            [
-                'title.required' => 'The title field is required.',
-                'content.required' => 'The content field is required.',
-            ]
-        );
-
-        if ($validator->fails()) {
-            http_response_code(400);
-            return (json_encode(['errors' => $validator->errors()]));
+        if ($_SESSION['user']['role'] != 'admin') {
+            return redirect('/User/login');
         }
-
-        $post = $this->model->all()->find($array["id"]);
-        if (!$post) {
-            http_response_code(400);
-            exit;
-        }
-
-        $post->theme = $array["theme"];
-        $post->content = $array["content"];
-        $post->save();
-
-        echo json_encode($post);
+        $post = $this->model->where('id', $id)->first();
+        return view('edit_post', ['post' => $post]);
     }
 
-    private function getImageLink($file)
+    public function edit(Request $request)
     {
-        $imagePath = Storage::putFile("public", new File($file['tmp_name']));
-        return "../storage/" . mb_substr(stristr($imagePath, '/'), 1);
+        if ($_SESSION['user']['role'] != 'admin') {
+            return redirect('/User/login');
+        }
+        $request->validate([
+            'theme' => 'required',
+            //'imageFile' => 'image|mimes:jpg,png,jpeg,gif,svg|max:2048',
+            'content' => 'required'
+        ]);
+
+        $post = $this->model->find($request['id']);
+
+        $post->theme = $request['theme'];
+        $post->content = $request['content'];
+        $post->imageLink = "";
+        //$this->model->imageLink = $request('imageFile')->store('public/assets/imgs/blog');
+
+        $isUpdated = $post->update();
+
+        if ($isUpdated ==  true) {
+            return redirect('/Blog');
+        }
     }
 }

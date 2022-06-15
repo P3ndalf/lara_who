@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
-class CreateBlogModelsTable extends Migration
+class CreateContactsModelsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,12 +13,9 @@ class CreateBlogModelsTable extends Migration
      */
     public function up()
     {
-        Schema::create('blog_models', function (Blueprint $table) {
+        Schema::create('contacts_models', function (Blueprint $table) {
             $table->id();
-            $table->string('theme');
-            $table->string('imageLink');
-            $table->text('content');
-            $table->dateTime('date')->default(DB::raw('NOW()'));
+            $table->timestamps();
         });
     }
 
@@ -30,6 +26,6 @@ class CreateBlogModelsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('blog_models');
+        Schema::dropIfExists('contacts_models');
     }
 }

@@ -45,45 +45,21 @@ Registration
                 <div id="PasswordErrorId"></div>
             </div>
 
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
             <div class="d-flex mb-3">
                 <input class="btn btn-outline-dark mr-3" type="submit" name="submit" value="Registrate">
                 <button class="btn btn-outline-danger" type="reset" value="reset">Clear</button>
             </div>
         </form>
-        <script>
-            /*
-            $("#registrationForm").submit(function(event) {
-                event.preventDefault();
-                var http = new XMLHttpRequest();
-                var url = '/Registration/registrate';
-                http.open('POST', url, true);
-                http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-
-                http.onreadystatechange = function() {
-                    if (http.readyState === 4 && http.status === 200) {
-                        if (http.responseText) {
-                            var result = JSON.parse(http.responseText);
-
-                            $('#NameId').val(result['fields']['name']);
-                            $('#LastNameId').val(result['fields']['lastName']);
-                            $('#EmailId').val(result['fields']['email']);
-                            $('#PasswordId').val(result['fields']['password']);
-
-                            $('#NameErrorId').html(result['errors']['name']);
-                            $('#LastNameErrorId').html(result['errors']['lastName']);
-                            $('#EmailErrorId').html(result['errors']['email']);
-                            $('#PasswordErrorId').html(result['errors']['password']);
-
-                            if (result['saved'] == true) {
-                                window.location.href = '/Home/';
-                            }
-                        }
-                    }
-                }
-                http.send($('#registrationForm').serialize());
-            });
-            */
-        </script>
     </div>
 </div>
 

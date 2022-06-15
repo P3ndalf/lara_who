@@ -36,6 +36,15 @@ Add post
                 <label for="blogContent">Write content</label>
                 <textarea class="form-control" placeholder="Write all your thoughts about your theme" rows="5" name="content"></textarea>
             </div>
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
 
             <div class="d-flex mb-3">
                 <input class="btn btn-outline-dark mr-3" type="submit" name="submit" value="Add blog">

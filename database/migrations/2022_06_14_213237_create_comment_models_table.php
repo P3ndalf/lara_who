@@ -18,6 +18,7 @@ class CreateCommentModelsTable extends Migration
             $table->id();
             $table->string('postId');
             $table->string('authorId');
+            $table->string('authorLogin');
             $table->string('content');
             $table->dateTime('date')->default(DB::raw('NOW()'));
         });
