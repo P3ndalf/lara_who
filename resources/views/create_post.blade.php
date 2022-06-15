@@ -12,29 +12,29 @@ Add post
             Add post
         </h1>
 
-        <form enctype="multipart/form-data" method="post">
-
+        <form enctype="multipart/form-data" method="post" action="/CreateBlog/create">
+            @csrf
             <div class="mb-3">
                 <label for="blogThemeId">Write theme</label>
-                <input type="text" class="form-control" id="blogThemeId" name="blogTheme" placeholder="Come up with breathtaking theme for your post">
+                <input type="text" class="form-control" id="blogThemeId" name="theme" placeholder="Come up with breathtaking theme for your post">
             </div>
 
             <div class="mb-3">
-                <label for="blogImage">Choose image</label>
+                <label for="blogImageId">Choose image</label>
                 <div class="input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text">Image</span>
                     </div>
                     <div class="custom-file">
-                        <input type="file" class="custom-file-input" id="inputGroupFile01" name="blogImage">
-                        <label class="custom-file-label" for="inputGroupFile01">Choose memorable image for your post</label>
+                        <input type="file" class="custom-file-input" id="blogImageId" name="imageFile">
+                        <label class="custom-file-label" for="blogImageId">Choose memorable image for your post</label>
                     </div>
                 </div>
             </div>
 
             <div class="mb-3">
                 <label for="blogContent">Write content</label>
-                <textarea class="form-control" placeholder="Write all your thoughts about your theme" rows="5" name="blogContent"></textarea>
+                <textarea class="form-control" placeholder="Write all your thoughts about your theme" rows="5" name="content"></textarea>
             </div>
 
             <div class="d-flex mb-3">

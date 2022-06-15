@@ -43,10 +43,13 @@ class UserController extends Controller
                 'role' => 'user'
             ];
 
-            if ($request['login'] == $this->adminModel['login'] && ($request['password'] == $this->adminModel['password'])) {
+            if ($request['login'] == $this->adminModel['login'] && (md5($request['password']) == $this->adminModel['password'])) {
                 $_SESSION['user']['role'] = 'admin';
             }
+
             return redirect('/');
+        } else {
+            return view('login', ['notFound' => 'User was not found']);
         }
     }
 
@@ -92,6 +95,9 @@ class UserController extends Controller
 
     public function logout()
     {
+        if (!isset($_SESSION['user'])) {
+            return redirect('/');
+        }
         session_destroy();
         return redirect('/');
     }

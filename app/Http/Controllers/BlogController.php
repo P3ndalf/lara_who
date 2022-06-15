@@ -3,13 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlogModel;
-use Illuminate\Http\Request;
-use Illuminate\Http\File;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Pagination\Paginator;
-
-if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+use Illuminate\Support\Facades\Validator;
 
 class BlogController extends Controller
 {
@@ -17,6 +12,7 @@ class BlogController extends Controller
 
     public function __construct()
     {
+        if (session_status() !== PHP_SESSION_ACTIVE) session_start();
         $this->model = new BlogModel();
     }
 
@@ -27,34 +23,16 @@ class BlogController extends Controller
         return view("blog", compact("posts"));
     }
 
-    public function createPost()
+    public function detailedBlog($id)
     {
-        return view("add_post");
+        $post = $this->model->where('id', $id);
+        return view("detailedBlog", ["post" => $post]);
     }
 
-    public function addPost(Request $request)
+    public function deletePost($id)
     {
-        $request->validate([
-            'theme' => 'required',
-            'imageFile' => 'mimes:jpg, jpeg, png',
-            'content' => 'required'
-        ]);
+        $this->model->where('id', '=', $id)->delete();
 
-        $this->model->theme = $_POST['theme'];
-        $this->model->content = $_POST['content'];
-        $this->model->imageLink = trim($_FILES['imageFile']['name']) ? $this->getImageLink($_FILES['imageFile']) : null;
-
-        return $this->model->save();
-    }
-
-    public function updatePost(Request $request)
-    {
-        // copy from prev
-    }
-
-    private function getImageLink($file)
-    {
-        $imagePath = Storage::putFile("public", new File($file['tmp_name']));
-        return "../assets/imgs/blog" . mb_substr(stristr($imagePath, '/'), 1);
+        return redirect('/');
     }
 }

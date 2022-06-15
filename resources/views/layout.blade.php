@@ -47,18 +47,26 @@
                         <li class="nav-item">
                             <a class="nav-link" href="contact.html">Test</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="contact.html">Socials</a>
-                        </li>
+
                         <?php if (!isset($_SESSION['user'])) {
+                            echo '  <li class="nav-item">';
+                            echo '      <a class="nav-link" href="/Blog">Socials</a>';
+                            echo '  </li>';
                             echo '<li class="nav-item"><a class="nav-link" href="/User/login">Sign in</a></li>';
                             echo '<li class="nav-item"><a class="nav-link" href="/User/registration">Sign up</a></li>';
                         } else {
+                            echo '  <li class="nav-item dropdown">';
+                            echo '      <a class="nav-link dropdown-toggle active" id="socialDropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Social</a>';
+                            echo '      <div class="dropdown-menu" aria-labelledby="socialDropdownMenuLink">';
+                            echo '          <a class="dropdown-item" href="/Blog">Blog</a>';
+                            echo '          <a class="dropdown-item" href="/CreateBlog/createPost">Create post</a>';
+                            echo '      </div>';
+                            echo '  </li>';
                             echo '<li class="nav-item nav-link">Hi, ' . $_SESSION['user']['login'] . '</li>';
                             echo '<li class="nav-item"><a class="nav-link" href="/User/logout">Log out</a></li>';
                         }
                         ?>
-                        <li class="nav-item mt-3 mt-lg-0 ms-lg-3 d-lg-none d-xl-inline-block"><a class="btn btn-primary" href="/Blog/createPost">Write a post</a>
+                        <li class="nav-item mt-3 mt-lg-0 ms-lg-3 d-lg-none d-xl-inline-block"><a class="btn btn-primary" href="/CreateBlog/createPost">Write a post</a>
                         </li>
                     </ul>
                 </div>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AboutMeController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CreateBlogController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InterestsController;
@@ -30,10 +31,11 @@ Route::get('/Interests', [InterestsController::class, 'index']);
 
 Route::get('/Blog', [BlogController::class, 'index']);
 
-Route::get('/Blog/createPost', [BlogController::class, 'addPostView']);
-
 if (isset($_SESSION['user'])) {
     Route::get('/User/logout', [UserController::class, 'logout']);
+
+    Route::get('/CreateBlog/createPost', [CreateBlogController::class, 'createPost']);
+    Route::post('/CreateBlog/create', [CreateBlogController::class, 'create']);
 } else {
     Route::get('/User/login', [UserController::class, 'loginView']);
     Route::post('/User/login', [UserController::class, 'login']);

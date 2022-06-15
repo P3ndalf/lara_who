@@ -21,6 +21,22 @@ Login
                 <label for="inputPasswordId">Write your password</label>
                 <input type="text" class="form-control" placeholder="Your password" name="password" data-validate>
             </div>
+            @if (isset($notFound))
+            <div class="alert alert-danger">
+                <ul>
+                    <li>{{ $notFound }}</li>
+                </ul>
+            </div>
+            @endif
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
 
             <div class="d-flex mb-3">
                 <input class="btn btn-outline-dark mr-3" type="submit" name="submit" value="Login">

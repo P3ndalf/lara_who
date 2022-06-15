@@ -27,7 +27,7 @@ Blog
         } ?>
 
         <div class="d-flex justify-content-center my-3">
-            {$posts->links('pagintaion::bootstrap-4')}
+            {{ $posts->links('pagination::bootstrap-4') }}
         </div>
     </div>
 </div>
